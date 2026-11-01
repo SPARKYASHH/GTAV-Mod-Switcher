@@ -1,0 +1,40 @@
+name: Windows tests and portable package
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse all PowerShell sources
+        shell: powershell
+        run: |
+          Get-ChildItem -Recurse -Filter *.ps1 | ForEach-Object {
+            $parseTokens = $null; $parseErrors = $null
+            [void][Management.Automation.Language.Parser]::ParseFile($_.FullName,[ref]$parseTokens,[ref]$parseErrors)
+            if ($parseErrors.Count) { throw ($parseErrors | Out-String) }
+          }
+      - name: File operations on temporary folders - Windows PowerShell 5.1
+        shell: powershell
+        run: .\tests\Core.Tests.ps1
+      - name: File operations on temporary folders - PowerShell 7
+        shell: pwsh
+        run: .\tests\Core.Tests.ps1
+      - name: Windows Forms smoke test
+        shell: powershell
+        run: .\ModSwitch.ps1 -SmokeTest
+      - name: Assemble portable package
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force package
+          Copy-Item ModSwitch.ps1,ModSwitch.Core.ps1,START.cmd,RUN-TESTS.cmd,README_RU.md,README.md,LICENSE,CHANGELOG.md -Destination package
+          Copy-Item docs,tests -Destination package -Recurse
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GTA-V-Mod-Switcher-by-SPARKYASHH-Windows-test-build
+          path: package/
+          if-no-files-found: error

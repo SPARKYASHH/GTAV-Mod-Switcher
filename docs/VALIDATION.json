@@ -1,0 +1,11 @@
+{
+  "syntax_parser": "tree-sitter-powershell",
+  "syntax_passed_files": [
+    "ModSwitch.Core.ps1",
+    "ModSwitch.ps1",
+    "tests/Core.Tests.ps1"
+  ],
+  "runtime_tests": "pending Windows execution; local .NET runtime failed to initialize in sandbox",
+  "real_game_test": "not performed",
+  "preview_launcher": "runs Windows core and GUI smoke tests before opening main application"
+}
