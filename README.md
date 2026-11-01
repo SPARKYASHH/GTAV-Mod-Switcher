@@ -1,8 +1,14 @@
 # GTA V Mod Switcher by SPARKYASHH
 
+[![Windows tests](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/workflows/windows-tests.yml/badge.svg)](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/workflows/windows-tests.yml)
+
 A portable Windows GUI for moving selected GTA V mod components out of the game directory and restoring them with one button.
 
-**Version 0.1 is a preview. Windows runtime tests have been prepared but have not run yet. Do not use this build on real mods until they pass.**
+**Version 0.1 is a preview. Windows CI passed: 26 assertions on Windows PowerShell 5.1, 26 on PowerShell 7, plus the Windows Forms smoke test. Real-installation GTA acceptance testing is still pending.**
+
+[Download tested preview](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41313796611/artifacts/13086641998) · [Windows test results](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41313796611)
+
+The temporary Actions download requires signing in to GitHub. Alternatively, use **Code → Download ZIP**. No stable release has been published yet.
 
 [Подробная инструкция на русском](README_RU.md)
 

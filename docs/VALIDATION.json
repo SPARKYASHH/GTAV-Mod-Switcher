@@ -5,7 +5,15 @@
     "ModSwitch.ps1",
     "tests/Core.Tests.ps1"
   ],
-  "runtime_tests": "pending Windows execution; local .NET runtime failed to initialize in sandbox",
+  "runtime_tests": {
+    "status": "passed",
+    "runner": "windows-2022",
+    "powershell_5_1_assertions": 26,
+    "powershell_7_assertions": 26,
+    "winforms_smoke": "passed",
+    "tested_commit": "8971c10e65b49d1a1c3f03dca83ed1f7049b63b8",
+    "workflow_url": "https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41313796611"
+  },
   "real_game_test": "not performed",
   "preview_launcher": "runs Windows core and GUI smoke tests before opening main application"
 }

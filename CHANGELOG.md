@@ -8,4 +8,5 @@
 - Exclusive storage lock, original-file/path safeguards, no overwrite or merge.
 - Durable operation plan, ordinary failure rollback and interrupted-operation recovery.
 - Russian/English documentation and Windows CI tests.
-- Pending: actual Windows test results and real-installation acceptance testing.
+- Windows Server 2022 CI passed: PowerShell 5.1 (26 assertions), PowerShell 7 (26 assertions), WinForms smoke test.
+- Pending: real-installation GTA acceptance testing.
