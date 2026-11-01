@@ -14,6 +14,7 @@
     "tested_commit": "8971c10e65b49d1a1c3f03dca83ed1f7049b63b8",
     "workflow_url": "https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41313796611"
   },
-  "real_game_test": "not performed",
-  "preview_launcher": "runs Windows core and GUI smoke tests before opening main application"
+  "real_game_test": "User confirmed disable, restore and persistence after restart on their GTA V Legacy installation. Other installations not validated.",
+  "preview_launcher": "runs Windows core and GUI smoke tests before opening main application",
+  "ui_refresh": "New approved branding and theme pending CI test on this commit."
 }

@@ -1,11 +1,12 @@
 ﻿# GTA V Mod Switcher by SPARKYASHH -- graphical launcher, Windows PowerShell 5.1
 #Requires -Version 5.1
 [CmdletBinding()]
-param([switch]$SmokeTest)
+param([switch]$SmokeTest,[string]$PreviewPath)
 $ErrorActionPreference='Stop'
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 [Windows.Forms.Application]::EnableVisualStyles()
+Add-Type -Path (Join-Path $PSScriptRoot 'Theme.cs') -ReferencedAssemblies 'System.Windows.Forms','System.Drawing'
 . (Join-Path $PSScriptRoot 'ModSwitch.Core.ps1')
 $script:Context=$null
 $script:Groups=@()
@@ -24,44 +25,87 @@ try{if(Test-Exists $script:SettingsFile){$script:Settings=Read-Json $script:Sett
 
 $form=New-Object Windows.Forms.Form
 $form.Text='GTA V Mod Switcher by SPARKYASHH'
-$form.ClientSize=New-Object Drawing.Size(920,700)
-$form.MinimumSize=New-Object Drawing.Size(936,739)
+$form.ClientSize=New-Object Drawing.Size(1000,770)
+$form.MinimumSize=New-Object Drawing.Size(1016,809)
+$form.MaximumSize=New-Object Drawing.Size(1016,809)
+$form.MaximizeBox=$false
 $form.StartPosition='CenterScreen'
+$form.AutoScaleMode='Dpi'
+$form.AutoScaleDimensions=New-Object Drawing.SizeF(96,96)
 $form.Font=New-Object Drawing.Font('Segoe UI',10)
-$form.BackColor=[Drawing.Color]::FromArgb(244,246,250)
+$form.BackColor=[Drawing.Color]::FromArgb(247,248,245)
+$form.ForeColor=[Drawing.Color]::FromArgb(32,39,35)
+$appIcon=$null
+$iconPath=Join-Path $PSScriptRoot 'assets/app.ico'
+if(Test-Exists $iconPath){$appIcon=New-Object Drawing.Icon($iconPath);$form.Icon=$appIcon}
 function New-Label([string]$Text,[int]$X,[int]$Y,[int]$Width,[int]$Height){
  $c=New-Object Windows.Forms.Label;$c.Text=$Text;$c.Location=New-Object Drawing.Point($X,$Y);$c.Size=New-Object Drawing.Size($Width,$Height);$form.Controls.Add($c);return $c
 }
 function New-Button([string]$Text,[int]$X,[int]$Y,[int]$Width,[int]$Height){
- $c=New-Object Windows.Forms.Button;$c.Text=$Text;$c.Location=New-Object Drawing.Point($X,$Y);$c.Size=New-Object Drawing.Size($Width,$Height);$c.FlatStyle='Flat';$c.BackColor=[Drawing.Color]::White;$form.Controls.Add($c);return $c
+ $c=New-Object Windows.Forms.Button;$c.Text=$Text;$c.Location=New-Object Drawing.Point($X,$Y);$c.Size=New-Object Drawing.Size($Width,$Height);$c.FlatStyle='Flat';$c.FlatAppearance.BorderColor=[Drawing.Color]::FromArgb(210,217,209);$c.FlatAppearance.MouseOverBackColor=[Drawing.Color]::FromArgb(234,241,234);$c.BackColor=[Drawing.Color]::White;$c.Cursor=[Windows.Forms.Cursors]::Hand;$form.Controls.Add($c);return $c
 }
-$title=New-Label 'GTA V Mod Switcher' 24 18 650 36
-$title.Font=New-Object Drawing.Font('Segoe UI',19,[Drawing.FontStyle]::Bold)
-$credit=New-Label 'by SPARKYASHH  |  Предварительная версия 0.1' 26 58 700 26
-$credit.ForeColor=[Drawing.Color]::FromArgb(85,96,115)
-$pathLabel=New-Label 'Папка GTA V — выберите папку или вставьте путь и нажмите Enter:' 24 96 850 25
+$brandPicture=New-Object Windows.Forms.PictureBox
+$brandPicture.Location=New-Object Drawing.Point(32,27);$brandPicture.Size=New-Object Drawing.Size(48,48);$brandPicture.SizeMode='Zoom'
+$brandBitmap=$null
+if($null -ne $appIcon){$brandBitmap=$appIcon.ToBitmap();$brandPicture.Image=$brandBitmap}
+$form.Controls.Add($brandPicture)
+$title=New-Label 'GTA V Mod Switcher' 96 22 820 38
+$title.Font=New-Object Drawing.Font('Segoe UI',20,[Drawing.FontStyle]::Bold)
+$credit=New-Label 'by SPARKYASHH' 98 63 780 24
+$credit.ForeColor=[Drawing.Color]::FromArgb(103,113,107)
+$separator=New-Label '' 32 104 936 1
+$separator.BackColor=[Drawing.Color]::FromArgb(220,225,218)
+$pathLabel=New-Label 'Папка игры' 32 122 780 24
 $pathBox=New-Object Windows.Forms.ComboBox
-$pathBox.Location=New-Object Drawing.Point(24,124);$pathBox.Size=New-Object Drawing.Size(704,30);$pathBox.DropDownStyle='DropDown';$form.Controls.Add($pathBox)
+$pathBox.Location=New-Object Drawing.Point(32,152);$pathBox.Size=New-Object Drawing.Size(752,30);$pathBox.DropDownStyle='DropDown';$pathBox.FlatStyle='Flat';$pathBox.BackColor=[Drawing.Color]::White;$form.Controls.Add($pathBox)
 foreach($p in $script:Settings.profiles){[void]$pathBox.Items.Add($p.gamePath)}
-$browse=New-Button 'Выбрать папку…' 744 122 152 32
-$storageLabel=New-Label 'Хранилище создастся автоматически рядом с папкой игры.' 24 163 870 38
-$status=New-Label 'Сначала выберите папку GTA V.' 24 206 870 32
+$browse=New-Button 'Обзор…' 800 149 168 34
+$status=New-Label '●  Выберите папку GTA V' 32 202 936 28
+$status.ForeColor=[Drawing.Color]::FromArgb(37,92,60)
 $status.Font=New-Object Drawing.Font('Segoe UI',11,[Drawing.FontStyle]::Bold)
-$groupsLabel=New-Label 'Выберите группы для отключения. Справа — точный состав выбранной группы.' 24 247 870 25
-$list=New-Object Windows.Forms.CheckedListBox
-$list.Location=New-Object Drawing.Point(24,278);$list.Size=New-Object Drawing.Size(450,224);$list.CheckOnClick=$true;$list.IntegralHeight=$false;$form.Controls.Add($list)
+$statusHint=New-Label 'Можно вставить путь в поле и нажать Enter. Поддерживаются отдельные профили установок.' 32 234 936 24
+$statusHint.ForeColor=[Drawing.Color]::FromArgb(103,113,107)
+$statusHint.Font=New-Object Drawing.Font('Segoe UI',9)
+$leftCard=New-Object Sparkyashh.Card
+$leftCard.Location=New-Object Drawing.Point(32,278);$leftCard.Size=New-Object Drawing.Size(440,276);$form.Controls.Add($leftCard)
+$list=New-Object Sparkyashh.GroupList
+$list.Location=New-Object Drawing.Point(12,10);$list.Size=New-Object Drawing.Size(416,254);$leftCard.Controls.Add($list)
+$rightCard=New-Object Sparkyashh.Card
+$rightCard.Location=New-Object Drawing.Point(488,278);$rightCard.Size=New-Object Drawing.Size(480,276);$form.Controls.Add($rightCard)
+$detailsTitle=New-Object Windows.Forms.Label
+$detailsTitle.Text='Состав группы';$detailsTitle.Location=New-Object Drawing.Point(22,20);$detailsTitle.Size=New-Object Drawing.Size(436,30);$detailsTitle.Font=New-Object Drawing.Font('Segoe UI',13,[Drawing.FontStyle]::Bold);$rightCard.Controls.Add($detailsTitle)
 $details=New-Object Windows.Forms.TextBox
-$details.Location=New-Object Drawing.Point(490,278);$details.Size=New-Object Drawing.Size(406,224);$details.Multiline=$true;$details.ReadOnly=$true;$details.ScrollBars='Vertical';$details.BackColor=[Drawing.Color]::White;$form.Controls.Add($details)
-$addFile=New-Button 'Добавить файл…' 24 514 145 34
-$addFolder=New-Button 'Добавить папку…' 177 514 151 34
-$refresh=New-Button 'Обновить список' 336 514 138 34
-$openStorage=New-Button 'Открыть хранилище' 490 514 194 34
-$recover=New-Button 'Восстановить' 700 514 196 34
-$toggle=New-Button 'Выберите папку игры' 24 563 872 48
-$toggle.BackColor=[Drawing.Color]::FromArgb(41,93,210);$toggle.ForeColor=[Drawing.Color]::White;$toggle.Font=New-Object Drawing.Font('Segoe UI',12,[Drawing.FontStyle]::Bold)
-$note=New-Label 'Переключатель работает с выбранными файлами. Оригинальные архивы и параметры BattlEye не изменяются. Отключение выбранных модов не подтверждает полную чистоту игры для Online.' 24 624 872 62
+$details.Location=New-Object Drawing.Point(22,64);$details.Size=New-Object Drawing.Size(436,190);$details.Multiline=$true;$details.ReadOnly=$true;$details.ScrollBars='Vertical';$details.BorderStyle='None';$details.BackColor=[Drawing.Color]::White;$details.ForeColor=[Drawing.Color]::FromArgb(66,76,69);$rightCard.Controls.Add($details)
+$addFile=New-Button 'Добавить файл…' 32 568 138 34
+$addFolder=New-Button 'Добавить папку…' 180 568 146 34
+$refresh=New-Button 'Обновить' 336 568 136 34
+$recover=New-Button 'Восстановить' 800 568 168 34
+$storageCaption=New-Label 'Путь к хранилищу модов' 32 622 680 23
+$storageCaption.ForeColor=[Drawing.Color]::FromArgb(103,113,107)
+$storageLabel=New-Label 'Будет создано автоматически рядом с папкой игры.' 32 651 728 27
+$storageLabel.AutoEllipsis=$true
+$openStorage=New-Button 'Открыть хранилище' 776 639 192 36
+$toggle=New-Button 'Выберите папку игры' 628 699 340 46
+$toggle.BackColor=[Drawing.Color]::FromArgb(37,92,60);$toggle.ForeColor=[Drawing.Color]::White;$toggle.FlatAppearance.BorderSize=0;$toggle.FlatAppearance.MouseOverBackColor=[Drawing.Color]::FromArgb(29,75,48);$toggle.Font=New-Object Drawing.Font('Segoe UI',11,[Drawing.FontStyle]::Bold)
+$note=New-Label 'Переключаются выбранные компоненты. Параметры BattlEye не меняются; полная чистота игры для Online не проверяется.' 32 702 565 43
 $note.Font=New-Object Drawing.Font('Segoe UI',9)
-$note.ForeColor=[Drawing.Color]::FromArgb(85,96,115)
+$note.ForeColor=[Drawing.Color]::FromArgb(103,113,107)
+$tip=New-Object Windows.Forms.ToolTip
+$tip.SetToolTip($pathBox,'Выберите папку GTA V или вставьте полный путь и нажмите Enter.')
+$tip.SetToolTip($recover,'Вернуть состояние до прерванного переключения.')
+function Get-GroupCaption($Group){
+ switch($Group.Id){
+  'archives'{return 'Папка mods'}
+  'menyoo'{return 'Menyoo'}
+  'loader'{return 'Script Hook V'}
+  'dotnet'{return 'ScriptHookVDotNet'}
+  'scripts'{return 'Скрипты'}
+  'graphics'{return 'Графические моды'}
+  'arguments'{return 'Параметры запуска'}
+  'otherasi'{return 'Другие ASI-моды'}
+  default{return $Group.Label}
+ }
+}
 function Show-Error([string]$Message){[void][Windows.Forms.MessageBox]::Show($form,$Message,'GTA V Mod Switcher','OK','Error')}
 function Get-CurrentProfile {
  return @($script:Settings.profiles | Where-Object {$_.gamePath -ieq $script:Context.Game})[0]
@@ -79,9 +123,10 @@ function Save-Selection {
  Save-Settings
 }
 function Update-Details {
- if($list.SelectedIndex -lt 0){$details.Text='Выберите строку, чтобы увидеть все входящие в группу файлы и папки.';return}
- $g=$script:Groups[$list.SelectedIndex]
- $lines=@($g.Label,'')
+ if($list.SelectedIndices.Count -eq 0){$detailsTitle.Text='Состав группы';$details.Text='Выберите группу слева, чтобы увидеть её файлы и их расположение.';return}
+ $g=$script:Groups[$list.SelectedIndices[0]]
+ $detailsTitle.Text=Get-GroupCaption $g
+ $lines=@('Файлы и папки:','')
  foreach($item in @(Get-ModState $script:Context $g.Names)){
   $label=switch($item.State){'Enabled'{'в игре'}
    'Disabled'{'в хранилище'}
@@ -95,31 +140,48 @@ function Update-View {
  $ready=$null -ne $script:Context
  foreach($c in @($list,$addFile,$addFolder,$refresh,$openStorage,$toggle)){$c.Enabled=$ready -and -not $script:Busy}
  $recover.Enabled=$false
- if(-not $ready){return}
+ if(-not $ready){
+  $script:Loading=$true;try{$list.Items.Clear()}finally{$script:Loading=$false}
+  $status.Text='●  Выберите папку GTA V';$statusHint.Text='Вставьте полный путь и нажмите Enter или воспользуйтесь кнопкой «Обзор…».'
+  $storageLabel.Text='Будет создано автоматически рядом с папкой игры.'
+  $toggle.Text='Выберите папку игры';Update-Details;return
+ }
  $profile=Get-CurrentProfile
  $script:Loading=$true
  try{
   $script:Groups=@(Get-ComponentGroups $script:Context $profile.customNames)
   $list.Items.Clear()
-  foreach($g in $script:Groups){[void]$list.Items.Add($g.Label,($profile.selectedIds -contains $g.Id))}
+  foreach($g in $script:Groups){
+   $row=New-Object Windows.Forms.ListViewItem((Get-GroupCaption $g))
+   $row.Checked=$profile.selectedIds -contains $g.Id
+   [void]$list.Items.Add($row)
+  }
  }finally{$script:Loading=$false}
  $stored=@(Get-ChildItem -LiteralPath $script:Context.Disabled -Force)
  $allNames=@($script:Groups | ForEach-Object {$_.Names})
  $states=@(Get-ModState $script:Context $allNames)
  $conflicts=@($states | Where-Object {$_.State -eq 'Conflict'})
  $pending=Get-PendingOperation $script:Context
- $storageLabel.Text='Хранилище: '+$script:Context.Storage
+ $storageLabel.Text=$script:Context.Storage
+ $tip.SetToolTip($storageLabel,$script:Context.Storage)
+ $status.ForeColor=[Drawing.Color]::FromArgb(37,92,60)
  if($null -ne $pending){
-  $status.Text='Предыдущая операция прервана. Сначала восстановите прежнее состояние.'
+  $status.Text='●  Переключение прервано'
+  $statusHint.Text='Нажмите «Восстановить», чтобы вернуть прежнее состояние.'
+  $status.ForeColor=[Drawing.Color]::FromArgb(151,93,27)
   $toggle.Enabled=$false;$recover.Enabled=$true
  }elseif($conflicts.Count){
-  $status.Text='Обнаружены конфликты. Посмотрите состав групп и проверьте обе папки.'
+  $status.Text='●  Обнаружены конфликты файлов'
+  $statusHint.Text='Посмотрите состав групп и проверьте копии в игре и в хранилище.'
+  $status.ForeColor=[Drawing.Color]::FromArgb(164,54,47)
   $toggle.Enabled=$false
  }elseif($stored.Count){
-  $status.Text='Временно отключено компонентов: '+$stored.Count
+  $status.Text='●  Есть отключённые моды'
+  $statusHint.Text='Компонентов в хранилище: '+$stored.Count+'. Кнопка вернёт их все, независимо от галочек.'
   $toggle.Text='Включить отключённые моды'
  }else{
-  $status.Text='Компонентов в хранилище нет. Выберите группы для отключения.'
+  $status.Text='●  Моды включены'
+  $statusHint.Text='В хранилище нет компонентов. Галочками выберите, что отключить.'
   $toggle.Text='Отключить выбранные моды'
  }
  Update-Details
@@ -215,17 +277,30 @@ if($SmokeTest){
   [IO.File]::WriteAllText((Join-Path $fakeGame 'GTA5.exe'),'TEST ONLY')
   [IO.File]::WriteAllText((Join-Path $fakeGame 'Menyoo.asi'),'TEST ONLY')
   Select-Game $fakeGame
+  if($null -eq $appIcon){throw 'GUI: application icon missing'}
   if($list.Items.Count -ne 1 -or $list.CheckedItems.Count -ne 1){throw 'GUI: default Menyoo selection failed'}
-  $list.SelectedIndex=0;Update-Details
+  $list.Items[0].Selected=$true;Update-Details
   if($details.Text -notmatch 'Menyoo.asi'){throw 'GUI: component details missing'}
   if($toggle.Text -ne 'Отключить выбранные моды'){throw 'GUI: wrong initial action'}
   Invoke-ModSwitch $script:Context Disable @('Menyoo.asi') | Out-Null
   Update-View
   if($toggle.Text -ne 'Включить отключённые моды'){throw 'GUI: wrong restore action'}
   Invoke-ModSwitch $script:Context Enable @('Menyoo.asi') | Out-Null
+  if($PreviewPath){
+   foreach($name in @('mods','scripts','menyooStuff')){[void][IO.Directory]::CreateDirectory((Join-Path $fakeGame $name))}
+   foreach($name in @('ScriptHookV.dll','dinput8.dll','dxgi.dll')){[IO.File]::WriteAllText((Join-Path $fakeGame $name),'TEST ONLY')}
+   Update-View
+   $form.Show();[Windows.Forms.Application]::DoEvents()
+   $list.Items[1].Selected=$true;Update-Details
+   $bitmap=New-Object Drawing.Bitmap($form.Width,$form.Height)
+   try{$form.DrawToBitmap($bitmap,(New-Object Drawing.Rectangle(0,0,$form.Width,$form.Height)));$bitmap.Save($PreviewPath,[Drawing.Imaging.ImageFormat]::Png)}finally{$bitmap.Dispose()}
+  }
   Write-Host 'PASS: GUI initialization, saved profile, group defaults, details, automatic toggle state'
- }finally{$form.Dispose();if(Test-Exists $smokeRoot){Remove-Item -LiteralPath $smokeRoot -Recurse -Force}}
+ }finally{$form.Dispose();$tip.Dispose();if($null -ne $brandBitmap){$brandBitmap.Dispose()};if($null -ne $appIcon){$appIcon.Dispose()};if(Test-Exists $smokeRoot){Remove-Item -LiteralPath $smokeRoot -Recurse -Force}}
 }else{
  [void]$form.ShowDialog()
  $form.Dispose()
+ $tip.Dispose()
+ if($null -ne $brandBitmap){$brandBitmap.Dispose()}
+ if($null -ne $appIcon){$appIcon.Dispose()}
 }

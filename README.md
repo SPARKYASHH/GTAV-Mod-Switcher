@@ -1,10 +1,12 @@
 # GTA V Mod Switcher by SPARKYASHH
 
+![GTA V Mod Switcher by SPARKYASHH](assets/github-banner.png)
+
 [![Windows tests](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/workflows/windows-tests.yml/badge.svg)](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/workflows/windows-tests.yml)
 
 A portable Windows GUI for moving selected GTA V mod components out of the game directory and restoring them with one button.
 
-**Version 0.1 is a preview. Windows CI passed: 26 assertions on Windows PowerShell 5.1, 26 on PowerShell 7, plus the Windows Forms smoke test. Real-installation GTA acceptance testing is still pending.**
+**Version 0.1 is a preview. Windows CI passed: 26 assertions on Windows PowerShell 5.1, 26 on PowerShell 7, plus the Windows Forms smoke test. The user confirmed disable, restore and saved settings after restart on their Legacy installation. Other installations still need validation.**
 
 [Download tested preview](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41313796611/artifacts/13086641998) · [Windows test results](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41313796611)
 
@@ -30,6 +32,12 @@ The tool uses same-drive moves, rejects overwrite/merge conflicts, records a rec
 Before migrating from the old ModSwitch v2, restore all mods using the old switcher first. Old storage is not imported automatically.
 
 This tool does not certify an Online-compatible installation. It does not restore original archives, change BattlEye or launcher options, or detect every possible mod. `START.cmd` sets execution-policy bypass only for its PowerShell process; it does not change machine-wide policy or bypass organizational restrictions.
+
+## App icon and desktop shortcut
+
+Run `CREATE-SHORTCUT.cmd` to create a desktop shortcut with the GTA V / MODS switch icon. Keep the application in its final location before creating the shortcut. The shortcut launches `START.cmd`, including preview checks.
+
+The icon artwork was image-generated. GTA V branding belongs to its respective owners; the code MIT license does not grant trademark rights. This is an unofficial utility.
 
 ## Development
 

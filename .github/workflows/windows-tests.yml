@@ -26,15 +26,20 @@ jobs:
         run: .\tests\Core.Tests.ps1
       - name: Windows Forms smoke test
         shell: powershell
-        run: .\ModSwitch.ps1 -SmokeTest
+        run: .\ModSwitch.ps1 -SmokeTest -PreviewPath "${{ runner.temp }}\sparkyashh-interface.png"
       - name: Assemble portable package
         shell: powershell
         run: |
           New-Item -ItemType Directory -Force package
-          Copy-Item ModSwitch.ps1,ModSwitch.Core.ps1,START.cmd,RUN-TESTS.cmd,README_RU.md,README.md,LICENSE,CHANGELOG.md -Destination package
-          Copy-Item docs,tests -Destination package -Recurse
+          Copy-Item ModSwitch.ps1,ModSwitch.Core.ps1,Theme.cs,START.cmd,RUN-TESTS.cmd,CREATE-SHORTCUT.cmd,Create-DesktopShortcut.ps1,README_RU.md,README.md,LICENSE,CHANGELOG.md -Destination package
+          Copy-Item docs,tests,assets -Destination package -Recurse
       - uses: actions/upload-artifact@v4
         with:
           name: GTA-V-Mod-Switcher-by-SPARKYASHH-Windows-test-build
           path: package/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Interface-preview
+          path: ${{ runner.temp }}/sparkyashh-interface.png
           if-no-files-found: error

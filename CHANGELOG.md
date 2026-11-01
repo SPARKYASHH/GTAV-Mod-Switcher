@@ -9,4 +9,7 @@
 - Durable operation plan, ordinary failure rollback and interrupted-operation recovery.
 - Russian/English documentation and Windows CI tests.
 - Windows Server 2022 CI passed: PowerShell 5.1 (26 assertions), PowerShell 7 (26 assertions), WinForms smoke test.
-- Pending: real-installation GTA acceptance testing.
+- User confirmed disable, restore, restart and saved settings on their installation.
+- Added the approved GTA V switch icon, optional desktop shortcut and GitHub banner.
+- Added a restrained light/forest-green interface, readable component rows and separate group details.
+- Further real-installation coverage, including Enhanced, remains pending.
