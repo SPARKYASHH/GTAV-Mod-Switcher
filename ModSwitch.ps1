@@ -272,6 +272,8 @@ $form.Add_Shown({
 })
 if($SmokeTest){
  try{
+  # ListView selection collections need native handles, including in a hidden test window.
+  [void]$form.Handle;[void]$list.Handle
   $fakeGame=Join-Path $smokeRoot 'GTA V Test'
   [void][IO.Directory]::CreateDirectory($fakeGame)
   [IO.File]::WriteAllText((Join-Path $fakeGame 'GTA5.exe'),'TEST ONLY')
