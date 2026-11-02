@@ -27,11 +27,17 @@ jobs:
       - name: Windows Forms smoke test
         shell: powershell
         run: .\ModSwitch.ps1 -SmokeTest -PreviewPath "${{ runner.temp }}\sparkyashh-interface.png"
+      - name: Build GUI launcher
+        shell: powershell
+        run: .\Build-Launcher.ps1
+      - name: Verify console-free launch and EXE shortcut
+        shell: powershell
+        run: .\tests\Launcher.Tests.ps1
       - name: Assemble portable package
         shell: powershell
         run: |
           New-Item -ItemType Directory -Force package
-          Copy-Item ModSwitch.ps1,ModSwitch.Core.ps1,Theme.cs,START.cmd,RUN-TESTS.cmd,CREATE-SHORTCUT.cmd,Create-DesktopShortcut.ps1,README_RU.md,README.md,LICENSE,CHANGELOG.md -Destination package
+          Copy-Item 'GTA V Mod Switcher.exe',Launcher.cs,Launch-Worker.ps1,Build-Launcher.ps1,BUILD-LAUNCHER.cmd,ModSwitch.ps1,ModSwitch.Core.ps1,Theme.cs,START.cmd,RUN-TESTS.cmd,CREATE-SHORTCUT.cmd,Create-DesktopShortcut.ps1,README_RU.md,README.md,LICENSE,CHANGELOG.md -Destination package
           Copy-Item docs,tests,assets -Destination package -Recurse
       - uses: actions/upload-artifact@v4
         with:

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1-preview — 2026-11-02
+
+- Native Windows GUI EXE starts the application without CMD or PowerShell windows.
+- Preflight checks still run; startup failures show a message with a local log path.
+- Desktop shortcuts now target the EXE; existing utility shortcuts can be updated.
+- Added built-in compiler build script and CI checks for GUI subsystem, hidden workers and startup failure handling.
+
 ## 0.1.0-preview — 2026-11-01
 
 - Windows Forms interface, saved installation profiles, path paste/browse.

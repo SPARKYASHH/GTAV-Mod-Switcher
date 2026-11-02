@@ -16,12 +16,13 @@ The ZIP includes the application and its source files; extract everything before
 
 ## Quick start
 
-1. Extract outside the game directory and mod storage. Keep all application files together.
-2. Launch `START.cmd`. This preview automatically runs isolated temporary-file and GUI smoke tests before opening the main window. If a test fails, the main window is not opened. `RUN-TESTS.cmd` runs checks separately.
-3. After successful checks, the main window opens. Use Windows 10/11 with built-in Windows PowerShell 5.1. No Python or additional library installation is required.
-4. Browse to your game directory, or paste its path and press Enter. Legacy (`GTA5.exe`) and Enhanced (`GTA5_Enhanced.exe`) paths are recognized; Enhanced has not been validated on a real installation.
-5. Review the component groups and their exact contents. Close GTA V, then disable selected groups.
-6. Press the same button again to restore all components disabled by this application. Checkboxes control the next disable operation, not restoration.
+1. Extract the ready-to-run package outside GTA and mod storage, keeping all files together.
+2. Open **`GTA V Mod Switcher.exe`**. It runs the preview checks without opening CMD or PowerShell windows, then opens the application. A startup failure produces a message box and a local log path.
+3. A **Code → Download ZIP source archive** does not contain the EXE: run `BUILD-LAUNCHER.cmd` once to compile it with the built-in Windows .NET Framework compiler. No additional libraries are downloaded. Then use the EXE.
+4. Select your game directory, or paste the path and press Enter. Review the selected component groups.
+5. Close GTA, disable the selected mods, and use the same button to restore all components disabled by the application.
+
+Requires Windows 10/11 and built-in Windows PowerShell 5.1. `START.cmd` and `RUN-TESTS.cmd` remain visible diagnostic launchers. Use the EXE or new desktop shortcut for normal console-free operation.
 
 Profiles and selections are remembered per installation. Storage is automatically created beside the game directory on the same drive: `<game-directory-name>-SPARKYASHH-ModStorage/DisabledFiles`. Do not delete/move storage while it contains mods.
 
@@ -31,13 +32,17 @@ The tool uses same-drive moves, rejects overwrite/merge conflicts, records a rec
 
 Before migrating from the old ModSwitch v2, restore all mods using the old switcher first. Old storage is not imported automatically.
 
-This tool does not certify an Online-compatible installation. It does not restore original archives, change BattlEye or launcher options, or detect every possible mod. `START.cmd` sets execution-policy bypass only for its PowerShell process; it does not change machine-wide policy or bypass organizational restrictions.
+This tool does not certify an Online-compatible installation. It does not restore original archives, change BattlEye or launcher options, or detect every possible mod. The launcher sets execution-policy bypass only for its PowerShell process; it does not change machine-wide policy or bypass organizational restrictions.
 
 ## App icon and desktop shortcut
 
-Run `CREATE-SHORTCUT.cmd` to create a desktop shortcut with the GTA V / MODS switch icon. Keep the application in its final location before creating the shortcut. The shortcut launches `START.cmd`, including preview checks.
+Run `CREATE-SHORTCUT.cmd` to create a desktop shortcut with the GTA V / MODS switch icon. Keep the application in its final location before creating the shortcut. The shortcut launches the EXE without a console, including preview checks. Existing shortcuts created by this utility are updated; unrelated same-name shortcuts are not overwritten.
 
 The icon artwork was image-generated. GTA V branding belongs to its respective owners; the code MIT license does not grant trademark rights. This is an unofficial utility.
+
+## Startup logs
+
+Errors are shown in a message box and recorded locally under `%LOCALAPPDATA%\SPARKYASHH\GTAVModSwitcher\logs`. Logs are never automatically uploaded.
 
 ## Development
 
