@@ -6,11 +6,11 @@
 
 A portable Windows GUI for moving selected GTA V mod components out of the game directory and restoring them with one button.
 
-**Version 0.1 is a preview. Windows CI passed: 26 assertions on Windows PowerShell 5.1, 26 on PowerShell 7, plus the Windows Forms smoke test. The user confirmed disable, restore and saved settings after restart on their Legacy installation. Other installations still need validation.**
+**Version v0.1.1 is the current release (Latest). Windows CI passed: 26 assertions on Windows PowerShell 5.1, 26 on PowerShell 7, plus the Windows Forms smoke test. The user confirmed disable, restore and saved settings after restart on their Legacy installation. Other installations still need validation.**
 
 [Download v0.1.1 Windows build](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/download/v0.1.1/GTA-V-Mod-Switcher-v0.1.1-Windows.zip) · [Windows test results](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867)
 
-The ready-to-run ZIP in [Releases](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/tag/v0.1.1) contains the EXE and does not require GitHub sign-in. [Source ZIP](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) is also available without sign-in; compile the launcher once as described below. Version v0.1.1 is marked as a pre-release.
+The ready-to-run ZIP in [Releases](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/tag/v0.1.1) contains the EXE and does not require GitHub sign-in. [Source ZIP](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) is also available without sign-in; compile the launcher once as described below. Version v0.1.1 is marked Latest. Verified scope: GTA V Legacy; Enhanced remains unvalidated.
 
 [Подробная инструкция на русском](README_RU.md)
 

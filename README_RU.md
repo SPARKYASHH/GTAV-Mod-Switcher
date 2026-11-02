@@ -4,11 +4,11 @@
 
 Оконный переключатель выбранных модов GTA V для Windows. Укажите папку игры один раз, отметьте группы — затем отключайте и возвращайте моды одной кнопкой.
 
-**0.1 — предварительная версия. Автоматические тесты Windows успешно пройдены: 26 проверок в PowerShell 5.1, 26 в PowerShell 7 и проверка интерфейса. Пользователь подтвердил отключение, возврат модов и сохранение настроек после перезапуска на своей установке Legacy. Другие конфигурации ещё предстоит проверить.**
+**v0.1.1 — текущий релиз (Latest). Автоматические тесты Windows успешно пройдены: 26 проверок в PowerShell 5.1, 26 в PowerShell 7 и проверка интерфейса. Пользователь подтвердил отключение, возврат модов и сохранение настроек после перезапуска на своей установке Legacy. Другие конфигурации ещё предстоит проверить.**
 
 [Скачать Windows-версию v0.1.1 с готовым EXE](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/download/v0.1.1/GTA-V-Mod-Switcher-v0.1.1-Windows.zip) · [Результаты проверок](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867)
 
-Готовый ZIP из [Releases](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/tag/v0.1.1) содержит EXE и скачивается без входа в GitHub. [Исходники ZIP](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) доступны без входа: для них запускатель собирается один раз, как описано ниже. Версия v0.1.1 помечена как предварительная (Pre-release).
+Готовый ZIP из [Releases](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/tag/v0.1.1) содержит EXE и скачивается без входа в GitHub. [Исходники ZIP](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) доступны без входа: для них запускатель собирается один раз, как описано ниже. Версия v0.1.1 отмечена как Latest. Проверенная область — GTA V Legacy; Enhanced ещё не проверена.
 
 ## Запуск
 
