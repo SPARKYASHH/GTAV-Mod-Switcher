@@ -8,9 +8,9 @@ A portable Windows GUI for moving selected GTA V mod components out of the game 
 
 **Version 0.1 is a preview. Windows CI passed: 26 assertions on Windows PowerShell 5.1, 26 on PowerShell 7, plus the Windows Forms smoke test. The user confirmed disable, restore and saved settings after restart on their Legacy installation. Other installations still need validation.**
 
-[Download tested preview](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) · [Windows test results](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41318521549)
+[Download ready-to-run Windows build](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867/artifacts/13126637886) · [Windows test results](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867)
 
-The ZIP includes the application and its source files; extract everything before launching. No GitHub sign-in is required for this source ZIP. No stable release has been published yet.
+The ready-to-run Actions ZIP contains the EXE and requires GitHub sign-in. [Source ZIP](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) is also available without sign-in; compile the launcher once as described below. No stable release has been published yet.
 
 [Подробная инструкция на русском](README_RU.md)
 

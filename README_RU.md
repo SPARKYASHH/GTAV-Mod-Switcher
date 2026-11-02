@@ -6,9 +6,9 @@
 
 **0.1 — предварительная версия. Автоматические тесты Windows успешно пройдены: 26 проверок в PowerShell 5.1, 26 в PowerShell 7 и проверка интерфейса. Пользователь подтвердил отключение, возврат модов и сохранение настроек после перезапуска на своей установке Legacy. Другие конфигурации ещё предстоит проверить.**
 
-[Скачать проверенную тестовую сборку](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) · [Результаты проверок](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41318521549)
+[Скачать готовую Windows-сборку с EXE](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867/artifacts/13126637886) · [Результаты проверок](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867)
 
-ZIP включает программу и исходники; распакуйте его целиком перед запуском. Для скачивания вход в GitHub не требуется. Также доступно **Code → Download ZIP**. Публичного стабильного релиза пока нет.
+Готовая сборка Actions уже содержит EXE; для скачивания требуется вход в GitHub. [Исходники ZIP](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) доступны без входа: для них запускатель собирается один раз, как описано ниже. Публичного стабильного релиза пока нет.
 
 ## Запуск
 

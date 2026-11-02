@@ -21,5 +21,17 @@
     "tested_commit": "6903ddabcdaa9ba1a6a6fc9154d108bdb4830844",
     "workflow_url": "https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41318521549",
     "checks": "Windows icon loading, custom light-theme controls, native list selection, group details, switching button and rendered window capture"
+  },
+  "console_free_launcher": {
+    "status": "passed",
+    "tested_commit": "db0f2a04537dd019bf9ffc121a62dc4722475116",
+    "workflow_url": "https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867",
+    "checks": [
+      "GUI PE subsystem",
+      "hidden PowerShell worker has no console window",
+      "original preflight tests and GUI checks pass through hidden launcher",
+      "missing worker produces nonzero exit",
+      "temporary desktop shortcut targets EXE"
+    ]
   }
 }
