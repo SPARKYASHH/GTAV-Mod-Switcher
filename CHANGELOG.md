@@ -1,7 +1,8 @@
 # Changelog
 
-## 0.1.1-preview — 2026-11-02
+## v0.1.1 Preview — 2026-11-02
 
+- First public preview with a ready-to-run ZIP, bilingual instructions and SHA-256 checksum.
 - Native Windows GUI EXE starts the application without CMD or PowerShell windows.
 - Preflight checks still run; startup failures show a message with a local log path.
 - Desktop shortcuts now target the EXE; existing utility shortcuts can be updated.

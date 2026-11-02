@@ -49,3 +49,45 @@ jobs:
           name: Interface-preview
           path: ${{ runner.temp }}/sparkyashh-interface.png
           if-no-files-found: error
+
+  publish-preview:
+    name: Publish v0.1.1 preview
+    needs: windows
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release v0.1.1]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: release-v0.1.1
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: GTA-V-Mod-Switcher-by-SPARKYASHH-Windows-test-build
+          path: package
+      - name: Package tested Windows build
+        working-directory: package
+        run: zip -q -r ../GTA-V-Mod-Switcher-v0.1.1-Windows.zip .
+      - name: Compute checksum
+        run: sha256sum GTA-V-Mod-Switcher-v0.1.1-Windows.zip > SHA256SUMS.txt
+      - name: Publish preview after attaching verified package
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag=v0.1.1
+          state=$(gh release view "$tag" --json isDraft --jq '.isDraft' 2>/dev/null || true)
+          if [ "$state" = "false" ]; then
+            echo 'This release is already public; refusing to overwrite it.'
+            exit 1
+          fi
+          if [ "$state" != "true" ]; then
+            gh release create "$tag" --draft --prerelease --target "$GITHUB_SHA" \
+              --title 'GTA V Mod Switcher by SPARKYASHH — v0.1.1 Preview' \
+              --notes-file docs/releases/v0.1.1.md
+          fi
+          gh release upload "$tag" GTA-V-Mod-Switcher-v0.1.1-Windows.zip SHA256SUMS.txt --clobber
+          gh release edit "$tag" --draft=false
+          gh release view "$tag" --json url --jq '.url'

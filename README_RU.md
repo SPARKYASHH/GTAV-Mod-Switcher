@@ -6,9 +6,9 @@
 
 **0.1 — предварительная версия. Автоматические тесты Windows успешно пройдены: 26 проверок в PowerShell 5.1, 26 в PowerShell 7 и проверка интерфейса. Пользователь подтвердил отключение, возврат модов и сохранение настроек после перезапуска на своей установке Legacy. Другие конфигурации ещё предстоит проверить.**
 
-[Скачать готовую Windows-сборку с EXE](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867/artifacts/13126637886) · [Результаты проверок](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867)
+[Скачать Windows-версию v0.1.1 с готовым EXE](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/download/v0.1.1/GTA-V-Mod-Switcher-v0.1.1-Windows.zip) · [Результаты проверок](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867)
 
-Готовая сборка Actions уже содержит EXE; для скачивания требуется вход в GitHub. [Исходники ZIP](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) доступны без входа: для них запускатель собирается один раз, как описано ниже. Публичного стабильного релиза пока нет.
+Готовый ZIP из [Releases](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/tag/v0.1.1) содержит EXE и скачивается без входа в GitHub. [Исходники ZIP](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) доступны без входа: для них запускатель собирается один раз, как описано ниже. Версия v0.1.1 помечена как предварительная (Pre-release).
 
 ## Запуск
 
@@ -85,6 +85,6 @@
 
 Исходники прошли проверку синтаксиса и автоматические тесты Windows Server 2022. Результаты: 26 проверок в каждой из двух версий PowerShell и успешная проверка WinForms. Пользователь подтвердил отключение/возврат и перезапуск на своей Legacy. Это не заменяет проверки остальных сборок. `tests/Core.Tests.ps1` содержит проверки переноса туда/обратно с сохранением данных, конфликта до первого перемещения, защиты оригиналов и путей, отката после сбоя, восстановления после прерывания, блокировки второго экземпляра и неизвестных файлов. `ModSwitch.ps1 -SmokeTest` проверяет создание окна, профиль, группы и изменение кнопки на временной папке.
 
-Workflow `Windows tests and portable package` запускает тесты Windows PowerShell 5.1, PowerShell 7 и интерфейса. Архив тестовой сборки создаётся только после их успеха. Публикация Releases автоматически не выполняется.
+Workflow `Windows tests and portable package` запускает тесты Windows PowerShell 5.1, PowerShell 7 и интерфейса. Архив тестовой сборки создаётся только после их успеха. Публикация v0.1.1 выполняется только для явно помеченного release-коммита в main и после успешных тестов. Обычные изменения не публикуют релиз.
 
 Автор: **SPARKYASHH**. Неофициальная независимая утилита, не связанная с Rockstar Games. Код — MIT, см. LICENSE. Рабочая логика развита из предоставленного пользователем ModSwitch v2.

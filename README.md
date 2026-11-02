@@ -8,9 +8,9 @@ A portable Windows GUI for moving selected GTA V mod components out of the game 
 
 **Version 0.1 is a preview. Windows CI passed: 26 assertions on Windows PowerShell 5.1, 26 on PowerShell 7, plus the Windows Forms smoke test. The user confirmed disable, restore and saved settings after restart on their Legacy installation. Other installations still need validation.**
 
-[Download ready-to-run Windows build](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867/artifacts/13126637886) · [Windows test results](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867)
+[Download v0.1.1 Windows build](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/download/v0.1.1/GTA-V-Mod-Switcher-v0.1.1-Windows.zip) · [Windows test results](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867)
 
-The ready-to-run Actions ZIP contains the EXE and requires GitHub sign-in. [Source ZIP](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) is also available without sign-in; compile the launcher once as described below. No stable release has been published yet.
+The ready-to-run ZIP in [Releases](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/tag/v0.1.1) contains the EXE and does not require GitHub sign-in. [Source ZIP](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) is also available without sign-in; compile the launcher once as described below. Version v0.1.1 is marked as a pre-release.
 
 [Подробная инструкция на русском](README_RU.md)
 
@@ -48,6 +48,6 @@ Errors are shown in a message box and recorded locally under `%LOCALAPPDATA%\SPA
 
 Run `tests/Core.Tests.ps1` in Windows PowerShell 5.1 and PowerShell 7, then run `ModSwitch.ps1 -SmokeTest` on Windows. Tests cover round-trip preservation, preflight conflicts, path/original-file protection, injected move failure rollback, crash recovery, exclusive storage locking and unknown stored files.
 
-The included GitHub Actions workflow runs Windows tests and uploads a portable test package only after success. It does not publish a release. A real-installation acceptance test is still required before release.
+The included GitHub Actions workflow runs Windows tests and uploads a portable test package only after success. The v0.1.1 publish job runs only for an explicitly marked release commit on main, after successful tests; ordinary commits do not publish releases. A real-installation acceptance test is still required before release.
 
 By **SPARKYASHH**. Independent, unofficial software; not affiliated with Rockstar Games. MIT licensed. Based on the user's supplied ModSwitch v2 logic.
