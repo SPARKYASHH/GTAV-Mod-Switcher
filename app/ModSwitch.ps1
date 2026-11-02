@@ -97,6 +97,7 @@ function Get-GroupCaption($Group){
  switch($Group.Id){
   'archives'{return 'Папка mods'}
   'menyoo'{return 'Menyoo'}
+  'simpletrainer'{return 'Simple Trainer'}
   'loader'{return 'Script Hook V'}
   'dotnet'{return 'ScriptHookVDotNet'}
   'scripts'{return 'Скрипты'}
@@ -192,8 +193,10 @@ function Select-Game([string]$Path){
  $profile=@($script:Settings.profiles | Where-Object {$_.gamePath -ieq $newContext.Game})
  if(-not $profile.Count){
   $groups=@(Get-ComponentGroups $newContext)
-  $p=[pscustomobject]@{gamePath=$newContext.Game;selectedIds=@($groups | Where-Object {$_.Recommended} | ForEach-Object {$_.Id});customNames=@()}
+  $p=[pscustomobject]@{gamePath=$newContext.Game;groupRevision=2;selectedIds=@($groups | Where-Object {$_.Recommended} | ForEach-Object {$_.Id});customNames=@()}
   $script:Settings.profiles=@($script:Settings.profiles)+@($p)
+ }else{
+  [void](Update-ComponentProfile $profile[0] $newContext)
  }
  $script:Settings.lastGame=$newContext.Game
  if(-not $pathBox.Items.Contains($newContext.Game)){[void]$pathBox.Items.Add($newContext.Game)}
@@ -288,6 +291,19 @@ if($SmokeTest){
   Update-View
   if($toggle.Text -ne 'Включить отключённые моды'){throw 'GUI: wrong restore action'}
   Invoke-ModSwitch $script:Context Enable @('Menyoo.asi') | Out-Null
+  [IO.File]::WriteAllText((Join-Path $fakeGame 'TrainerV.asi'),'TEST ONLY')
+  [IO.File]::WriteAllText((Join-Path $fakeGame 'trainerv.ini'),'TEST SETTINGS')
+  $oldProfile=Get-CurrentProfile
+  $oldProfile.PSObject.Properties.Remove('groupRevision')
+  $oldProfile.selectedIds=@('menyoo','otherasi')
+  Select-Game $fakeGame
+  $simpleIndex=-1
+  for($i=0;$i -lt $script:Groups.Count;$i++){if($script:Groups[$i].Id -eq 'simpletrainer'){$simpleIndex=$i}}
+  if($simpleIndex -lt 0 -or -not $list.Items[$simpleIndex].Checked){throw 'GUI: existing Simple Trainer ASI selection lost'}
+  if($list.Items[$simpleIndex].Text -ne 'Simple Trainer'){throw 'GUI: Simple Trainer caption missing'}
+  foreach($item in $list.Items){$item.Selected=$false}
+  $list.Items[$simpleIndex].Selected=$true;Update-Details
+  if($details.Text -notmatch 'TrainerV.asi' -or $details.Text -notmatch 'trainerv.ini'){throw 'GUI: Simple Trainer file details missing'}
   if($PreviewPath){
    foreach($name in @('mods','scripts','menyooStuff')){[void][IO.Directory]::CreateDirectory((Join-Path $fakeGame $name))}
    foreach($name in @('ScriptHookV.dll','dinput8.dll','dxgi.dll')){[IO.File]::WriteAllText((Join-Path $fakeGame $name),'TEST ONLY')}

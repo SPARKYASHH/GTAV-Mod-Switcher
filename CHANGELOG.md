@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.1.2 — 2026-11-02
+
+- Added a separate Simple Trainer group (`TrainerV.asi` and root-level `trainerv.ini`).
+- Preserved previous Other ASI selections during one-time profile migration.
+- Added English / Русский navigation and concise Online / Story Mode instructions.
+- Removed private-script migration guidance and icon design details from the user README; retained startup troubleshooting.
+- Moved developer information into docs/DEVELOPMENT.md.
+
 ## v0.1.1 Preview — 2026-11-02
 
 - First public preview with a ready-to-run ZIP, bilingual instructions and SHA-256 checksum.

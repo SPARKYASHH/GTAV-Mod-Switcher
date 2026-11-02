@@ -1,69 +1,59 @@
+**English** | [Русский](README_RU.md)
+
 # GTA V Mod Switcher by SPARKYASHH
 
-![GTA V Mod Switcher by SPARKYASHH](assets/github-banner.png)
+![GTA V Mod Switcher](assets/github-banner.png)
 
 [![Windows tests](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/workflows/windows-tests.yml/badge.svg)](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/workflows/windows-tests.yml)
 
-A portable Windows GUI for moving selected GTA V mod components out of the game directory and restoring them with one button.
+**Move your GTA V mods out of the game folder before playing GTA Online, then restore them for modded Story Mode — with one button.**
 
-**Version v0.1.1 is the current release (Latest). Windows CI passed: 26 assertions on Windows PowerShell 5.1, 26 on PowerShell 7, plus the Windows Forms smoke test. The user confirmed disable, restore and saved settings after restart on their Legacy installation. Other installations still need validation.**
+A portable Windows mod manager for enabling and disabling selected GTA V mods. Choose your game directory once; the app remembers your selection and creates storage automatically beside the game folder.
 
-[Download v0.1.1 Windows build](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/download/v0.1.1/GTA-V-Mod-Switcher-v0.1.1-Windows.zip) · [Windows test results](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/actions/runs/41413878867)
-
-The ready-to-run ZIP in [Releases](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/tag/v0.1.1) contains the EXE and does not require GitHub sign-in. [Source ZIP](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/archive/refs/heads/main.zip) is also available without sign-in; compile the launcher once as described below. Version v0.1.1 is marked Latest. Verified scope: GTA V Legacy; Enhanced remains unvalidated.
-
-[Подробная инструкция на русском](README_RU.md)
+**[Download Windows ZIP with EXE](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases/download/v0.1.2/GTA-V-Mod-Switcher-v0.1.2-Windows.zip)** · [All releases](https://github.com/SPARKYASHH/GTAV-Mod-Switcher/releases)
 
 ## Quick start
 
-1. Extract the ready-to-run package outside GTA and mod storage, keeping all files together.
-2. Open **`GTA V Mod Switcher.exe`**. It runs the preview checks without opening CMD or PowerShell windows, then opens the application. A startup failure produces a message box and a local log path.
-3. A **Code → Download ZIP source archive** does not contain the EXE: run `tools/BUILD-LAUNCHER.cmd` once to compile it with the built-in Windows .NET Framework compiler. No additional libraries are downloaded. Then open `app/GTA V Mod Switcher.exe`.
-4. Select your game directory, or paste the path and press Enter. Review the selected component groups.
-5. Close GTA, disable the selected mods, and use the same button to restore all components disabled by the application.
+1. Extract the complete Windows ZIP to a permanent folder **outside GTA and mod storage**.
+2. Open **`GTA V Mod Switcher.exe`**. Only the app window opens; no console appears.
+3. Select your GTA directory, or paste its path and press Enter.
+4. Review the checked groups. Select a group to see its exact files on the right.
+5. Close GTA, then click **Отключить выбранные моды** (Disable selected mods). The selected files move into storage.
+6. Click **Включить отключённые моды** (Restore disabled mods) to return everything previously moved by the app, regardless of the current checkboxes.
 
-Requires Windows 10/11 and built-in Windows PowerShell 5.1. `START.cmd` and `RUN-TESTS.cmd` remain visible diagnostic launchers. Use the EXE or new desktop shortcut for normal console-free operation.
+Optional: run `CREATE-SHORTCUT.cmd` once to create or update the desktop shortcut. The current app interface is in Russian; these instructions explain the controls in English.
 
-Profiles and selections are remembered per installation. Storage is automatically created beside the game directory on the same drive: `<game-directory-name>-SPARKYASHH-ModStorage/DisabledFiles`. Do not delete/move storage while it contains mods.
+## Which mods are detected?
 
-Groups include `mods`, Menyoo, ASI loader/Script Hook V, ScriptHookVDotNet, scripts, other ASIs, optional graphics proxies, and optional whole `commandline.txt`. Custom files/folders can be selected from the game root. Known original components, root RPF archives and EXEs are blocked. This is not a complete original-file database. Graphics candidates are unchecked by default and require review.
+Groups appear when matching files are found in your GTA directory or the app's storage. These are your **already installed files**; the list is not a bundled mod collection.
 
-The tool uses same-drive moves, rejects overwrite/merge conflicts, records a recovery journal and rolls back ordinary failures. After interruption, **Восстановить** (Recover) restores the state before the interrupted operation. No other processes are killed. Close GTA, OpenIV and Explorer windows accessing mod files if access is denied. Automatic lock-owner identification is not implemented.
-
-Before migrating from the old ModSwitch v2, restore all mods using the old switcher first. Old storage is not imported automatically.
-
-This tool does not certify an Online-compatible installation. It does not restore original archives, change BattlEye or launcher options, or detect every possible mod. The launcher sets execution-policy bypass only for its PowerShell process; it does not change machine-wide policy or bypass organizational restrictions.
-
-## App icon and desktop shortcut
-
-Run `CREATE-SHORTCUT.cmd` to create a desktop shortcut with the GTA V / MODS switch icon. Keep the application in its final location before creating the shortcut. The shortcut launches the EXE without a console, including preview checks. Existing shortcuts created by this utility are updated; unrelated same-name shortcuts are not overwritten.
-
-The icon artwork was image-generated. GTA V branding belongs to its respective owners; the code MIT license does not grant trademark rights. This is an unofficial utility.
-
-## Startup logs
-
-Errors are shown in a message box and recorded locally under `%LOCALAPPDATA%\SPARKYASHH\GTAVModSwitcher\logs`. Logs are never automatically uploaded.
-
-## Development
-
-Run `app/tests/Core.Tests.ps1` in Windows PowerShell 5.1 and PowerShell 7, then run `app/ModSwitch.ps1 -SmokeTest` on Windows. Tests cover round-trip preservation, preflight conflicts, path/original-file protection, injected move failure rollback, crash recovery, exclusive storage locking and unknown stored files.
-
-The included GitHub Actions workflow runs Windows tests and uploads a portable test package only after success. The v0.1.1 publish job runs only for an explicitly marked release commit on main, after successful tests; ordinary commits do not publish releases. A real-installation acceptance test is still required before release.
-
-By **SPARKYASHH**. Independent, unofficial software; not affiliated with Rockstar Games. MIT licensed. Based on the user's supplied ModSwitch v2 logic.
-
-## Source layout
-
-For normal use, download the **ready-to-run Windows ZIP from Releases** using the link above. You do not need the source repository.
-
-| Directory | Contents |
+| Group | Common files or folders |
 | --- | --- |
-| `app/` | Runtime files, app icon and required preflight tests |
-| `src/` | GUI EXE launcher source |
-| `tools/` | Developer build scripts |
-| `tests/` | Built launcher tests |
-| `assets/` | GitHub banner |
-| `docs/` | Additional documentation and release notes |
-| `.github/` | Automated testing and release publishing |
+| Menyoo | `Menyoo.asi`, `menyooStuff` |
+| Simple Trainer | `TrainerV.asi`, `trainerv.ini` in the game root |
+| ASI loader / Script Hook V | `dinput8.dll`, `ScriptHookV.dll` |
+| ScriptHookVDotNet | ASI, .NET libraries and settings |
+| Modded archives and scripts | `mods`, `scripts` |
+| Other ASI mods | Other `.asi` plugins in the game root |
+| Graphics mods — review first | Known ReShade / ENB names and proxy DLLs |
+| Launch arguments — optional | The complete `commandline.txt` |
 
-Build source with `tools/BUILD-LAUNCHER.cmd`, then run `app/GTA V Mod Switcher.exe`. Ready-to-run packages keep the EXE at the archive root. Keep packaged support files together with the application.
+Use **Добавить файл…** / **Добавить папку…** to select additional files or folders from the GTA root. Graphics candidates are unchecked by default: review their contents before selecting them. Simple Trainer settings kept in AppData stay there; only matching files inside GTA are moved. See the [Simple Trainer author's instructions](https://www.gta5-mods.com/scripts/simple-trainer-for-gtav).
+
+## Storage and GTA Online
+
+Storage is created on the same drive, beside GTA: `<game-folder-name>-SPARKYASHH-ModStorage/DisabledFiles`. Moves keep your mods available for restoration; existing destination files are never overwritten. **Keep storage while it contains disabled mods.** Paths, selections and installation profiles are saved automatically.
+
+**Before GTA Online:** the app moves the components you selected. Check that your selection covers your installed mods and that the original game files are intact. BattlEye and Steam/Rockstar launch options remain under your control. Moving selected files does not certify an Online-compatible installation.
+
+## Requirements and troubleshooting
+
+- **Windows 10/11**, with built-in Windows PowerShell 5.1 and .NET Framework. No Python or additional libraries need installing.
+- Disable/restore, saved settings and console-free launch were verified on the author's **GTA V Legacy** installation. Enhanced paths are recognized; a real Enhanced installation has not been validated.
+- **App does not open:** extract every file and use the ready-to-run ZIP from Releases. A startup error shows a local log path: `%LOCALAPPDATA%\SPARKYASHH\GTAVModSwitcher\logs`.
+- **Access denied:** close GTA, OpenIV and Explorer windows accessing the mod folders, then retry.
+- **Two copies / interrupted move:** review both folders; use **Восстановить** (Recover) for an interrupted operation. The app refuses to overwrite conflicting copies.
+
+[More troubleshooting](docs/TROUBLESHOOTING.md#english) · [Build from source](docs/DEVELOPMENT.md)
+
+By **SPARKYASHH** · [MIT license](LICENSE) · Independent, unofficial utility; not affiliated with Rockstar Games.

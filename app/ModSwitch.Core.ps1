@@ -177,6 +177,7 @@ function Get-ComponentGroups($Context,[string[]]$CustomNames=@()) {
     $specs=@(
         @{Id='archives';Label='Модифицированные архивы — mods';Names=@('mods');Recommended=$true},
         @{Id='menyoo';Label='Menyoo — меню и сохранения';Names=@('Menyoo.asi','menyooStuff','Menyoo.log');Recommended=$true},
+        @{Id='simpletrainer';Label='Simple Trainer — меню и настройки';Names=@('TrainerV.asi','trainerv.ini');Recommended=$true},
         @{Id='loader';Label='Загрузчик ASI и Script Hook V';Names=@('dinput8.dll','ScriptHookV.dll','ScriptHookV.log','asiloader.log');Recommended=$true},
         @{Id='dotnet';Label='ScriptHookVDotNet';Names=@('ScriptHookVDotNet.asi','ScriptHookVDotNet.dll','ScriptHookVDotNet2.dll','ScriptHookVDotNet3.dll','ScriptHookVDotNet.ini','ScriptHookVDotNet2.ini','ScriptHookVDotNet3.ini','ScriptHookVDotNet.log');Recommended=$true},
         @{Id='scripts';Label='Скрипты — scripts';Names=@('scripts');Recommended=$true},
@@ -195,4 +196,18 @@ function Get-ComponentGroups($Context,[string[]]$CustomNames=@()) {
         Assert-ModName $name
         if($known -notcontains $name -and $other -notcontains $name){[pscustomobject]@{Id=('custom:'+ $name);Label=('Свой компонент — '+$name);Names=@($name);Recommended=$false}}
     }
+}
+
+# Preserve the previous Other ASI selection when Simple Trainer gets its own group.
+# Apply once, so an explicit later checkbox change is never overwritten.
+function Update-ComponentProfile($Profile,$Context) {
+    $revision=$Profile.PSObject.Properties['groupRevision']
+    if($null -ne $revision -and [int]$revision.Value -ge 2){return $false}
+    $simple=@(Get-ComponentGroups $Context | Where-Object {$_.Id -eq 'simpletrainer' -and $_.Names -contains 'TrainerV.asi'})
+    if($Profile.selectedIds -contains 'otherasi' -and $simple.Count){
+        $Profile.selectedIds=@(@($Profile.selectedIds)+@('simpletrainer') | Sort-Object -Unique)
+    }
+    if($null -eq $revision){Add-Member -InputObject $Profile -NotePropertyName groupRevision -NotePropertyValue 2}
+    else{$Profile.groupRevision=2}
+    return $true
 }

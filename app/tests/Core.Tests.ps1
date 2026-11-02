@@ -16,6 +16,27 @@ try{
  Assert (Test-Exists $ctx.Disabled) 'Storage is automatic'
  $groups=@(Get-ComponentGroups $ctx)
  Assert (@($groups | Where-Object {$_.Id -eq 'menyoo'}).Count -eq 1) 'Detect Menyoo group'
+ Assert (@($groups | Where-Object {$_.Id -eq 'simpletrainer'}).Count -eq 0) 'Absent Simple Trainer is not shown'
+ [IO.File]::WriteAllText((Join-Path $game 'TrainerV.asi'),'trainer binary')
+ [IO.File]::WriteAllText((Join-Path $game 'trainerv.ini'),'saved settings')
+ [IO.File]::WriteAllText((Join-Path $game 'OtherMod.asi'),'other plugin')
+ $groups=@(Get-ComponentGroups $ctx)
+ $simple=@($groups | Where-Object {$_.Id -eq 'simpletrainer'})
+ Assert ($simple.Count -eq 1 -and $simple[0].Names.Count -eq 2) 'Simple Trainer includes menu and root INI'
+ $other=@($groups | Where-Object {$_.Id -eq 'otherasi'})
+ Assert ($other.Count -eq 1 -and $other[0].Names -contains 'OtherMod.asi' -and $other[0].Names -notcontains 'TrainerV.asi') 'Trainer is not duplicated in Other ASI'
+ $saved=[pscustomobject]@{selectedIds=@('otherasi');customNames=@()}
+ Assert (Update-ComponentProfile $saved $ctx) 'Existing profile upgraded once'
+ Assert ($saved.selectedIds -contains 'simpletrainer') 'Previous ASI selection retained'
+ $saved.selectedIds=@('otherasi')
+ Assert (-not (Update-ComponentProfile $saved $ctx)) 'Profile migration is idempotent'
+ Assert ($saved.selectedIds -notcontains 'simpletrainer') 'Explicit unchecked selection respected'
+ Invoke-ModSwitch $ctx Disable $simple[0].Names | Out-Null
+ $storedSimple=@(Get-ComponentGroups $ctx | Where-Object {$_.Id -eq 'simpletrainer'})
+ Assert ($storedSimple.Count -eq 1 -and $storedSimple[0].Names.Count -eq 2) 'Stored trainer is still recognized'
+ Invoke-ModSwitch $ctx Enable $storedSimple[0].Names | Out-Null
+ Assert ([IO.File]::ReadAllText((Join-Path $game 'trainerv.ini')) -eq 'saved settings') 'Trainer configuration round-trip preserves data'
+
  Invoke-ModSwitch $ctx Disable @('mods','Menyoo.asi') | Out-Null
  Assert (-not (Test-Exists (Join-Path $game 'mods'))) 'Moved mod folder'
  Assert ((Read-Json $ctx.Journal).state -eq 'Completed') 'Completed journal'
