@@ -20,16 +20,16 @@ jobs:
           }
       - name: File operations on temporary folders - Windows PowerShell 5.1
         shell: powershell
-        run: .\tests\Core.Tests.ps1
+        run: .\app\tests\Core.Tests.ps1
       - name: File operations on temporary folders - PowerShell 7
         shell: pwsh
-        run: .\tests\Core.Tests.ps1
+        run: .\app\tests\Core.Tests.ps1
       - name: Windows Forms smoke test
         shell: powershell
-        run: .\ModSwitch.ps1 -SmokeTest -PreviewPath "${{ runner.temp }}\sparkyashh-interface.png"
+        run: .\app\ModSwitch.ps1 -SmokeTest -PreviewPath "${{ runner.temp }}\sparkyashh-interface.png"
       - name: Build GUI launcher
         shell: powershell
-        run: .\Build-Launcher.ps1
+        run: .\tools\Build-Launcher.ps1
       - name: Verify console-free launch and EXE shortcut
         shell: powershell
         run: .\tests\Launcher.Tests.ps1
@@ -37,8 +37,10 @@ jobs:
         shell: powershell
         run: |
           New-Item -ItemType Directory -Force package
-          Copy-Item 'GTA V Mod Switcher.exe',Launcher.cs,Launch-Worker.ps1,Build-Launcher.ps1,BUILD-LAUNCHER.cmd,ModSwitch.ps1,ModSwitch.Core.ps1,Theme.cs,START.cmd,RUN-TESTS.cmd,CREATE-SHORTCUT.cmd,Create-DesktopShortcut.ps1,README_RU.md,README.md,LICENSE,CHANGELOG.md -Destination package
-          Copy-Item docs,tests,assets -Destination package -Recurse
+          Copy-Item app\* -Destination package -Recurse
+          Copy-Item README_RU.md,README.md,LICENSE,CHANGELOG.md -Destination package
+          Copy-Item docs -Destination package -Recurse
+          Copy-Item assets\github-banner.png -Destination package\assets\github-banner.png
       - uses: actions/upload-artifact@v4
         with:
           name: GTA-V-Mod-Switcher-by-SPARKYASHH-Windows-test-build

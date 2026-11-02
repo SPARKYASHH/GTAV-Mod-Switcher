@@ -1,6 +1,6 @@
 ﻿#Requires -Version 5.1
 $ErrorActionPreference='Stop'
-$root=Split-Path -Parent $PSScriptRoot
+$root=Join-Path (Split-Path -Parent $PSScriptRoot) 'app'
 $exe=Join-Path $root 'GTA V Mod Switcher.exe'
 $bytes=[IO.File]::ReadAllBytes($exe)
 $pe=[BitConverter]::ToInt32($bytes,0x3c)

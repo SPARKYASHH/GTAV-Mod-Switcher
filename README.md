@@ -18,7 +18,7 @@ The ready-to-run ZIP in [Releases](https://github.com/SPARKYASHH/GTAV-Mod-Switch
 
 1. Extract the ready-to-run package outside GTA and mod storage, keeping all files together.
 2. Open **`GTA V Mod Switcher.exe`**. It runs the preview checks without opening CMD or PowerShell windows, then opens the application. A startup failure produces a message box and a local log path.
-3. A **Code → Download ZIP source archive** does not contain the EXE: run `BUILD-LAUNCHER.cmd` once to compile it with the built-in Windows .NET Framework compiler. No additional libraries are downloaded. Then use the EXE.
+3. A **Code → Download ZIP source archive** does not contain the EXE: run `tools/BUILD-LAUNCHER.cmd` once to compile it with the built-in Windows .NET Framework compiler. No additional libraries are downloaded. Then open `app/GTA V Mod Switcher.exe`.
 4. Select your game directory, or paste the path and press Enter. Review the selected component groups.
 5. Close GTA, disable the selected mods, and use the same button to restore all components disabled by the application.
 
@@ -46,8 +46,24 @@ Errors are shown in a message box and recorded locally under `%LOCALAPPDATA%\SPA
 
 ## Development
 
-Run `tests/Core.Tests.ps1` in Windows PowerShell 5.1 and PowerShell 7, then run `ModSwitch.ps1 -SmokeTest` on Windows. Tests cover round-trip preservation, preflight conflicts, path/original-file protection, injected move failure rollback, crash recovery, exclusive storage locking and unknown stored files.
+Run `app/tests/Core.Tests.ps1` in Windows PowerShell 5.1 and PowerShell 7, then run `app/ModSwitch.ps1 -SmokeTest` on Windows. Tests cover round-trip preservation, preflight conflicts, path/original-file protection, injected move failure rollback, crash recovery, exclusive storage locking and unknown stored files.
 
 The included GitHub Actions workflow runs Windows tests and uploads a portable test package only after success. The v0.1.1 publish job runs only for an explicitly marked release commit on main, after successful tests; ordinary commits do not publish releases. A real-installation acceptance test is still required before release.
 
 By **SPARKYASHH**. Independent, unofficial software; not affiliated with Rockstar Games. MIT licensed. Based on the user's supplied ModSwitch v2 logic.
+
+## Source layout
+
+For normal use, download the **ready-to-run Windows ZIP from Releases** using the link above. You do not need the source repository.
+
+| Directory | Contents |
+| --- | --- |
+| `app/` | Runtime files, app icon and required preflight tests |
+| `src/` | GUI EXE launcher source |
+| `tools/` | Developer build scripts |
+| `tests/` | Built launcher tests |
+| `assets/` | GitHub banner |
+| `docs/` | Additional documentation and release notes |
+| `.github/` | Automated testing and release publishing |
+
+Build source with `tools/BUILD-LAUNCHER.cmd`, then run `app/GTA V Mod Switcher.exe`. Ready-to-run packages keep the EXE at the archive root. Keep packaged support files together with the application.

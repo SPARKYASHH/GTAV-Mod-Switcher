@@ -5,5 +5,5 @@ if errorlevel 1 (
  pause
  exit /b 1
 )
-echo Launcher ready. Open GTA V Mod Switcher.exe for a console-free start.
+echo Launcher ready. Open app\GTA V Mod Switcher.exe for a console-free start.
 pause
